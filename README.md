@@ -1,29 +1,33 @@
-# 🎤 VoiceKey
+# 🎤 Talk to Vibe
 
-Lightweight Speech-to-Text tool for Vibe Coding.  
-Hold a key → Speak → Release → Text is auto-pasted.
+Lightweight Speech-to-Text for macOS. Hold a key, speak, release — text is auto-pasted.
+
+Built for vibe coding: dictate prompts, comments, commit messages, or anything else without leaving your keyboard.
 
 ## Quick Start
 
 ```bash
-# 1. Setup
-cd voicekey
+# 1. Clone
+git clone https://github.com/woohoyang-oss/talk-to-vibe.git
+cd talk-to-vibe
+
+# 2. Setup
 bash setup.sh
 
-# 2. Run
+# 3. Run
 source .venv/bin/activate
 python voicekey.py
 ```
 
-First run will ask for your **OpenAI API key**.  
-Get one at: https://platform.openai.com/api-keys
+First run will ask for your **Groq API key** (free).
+Get one at: https://console.groq.com/keys
 
 ## Usage
 
-1. Run the app
-2. Open any app (terminal, IDE, browser, etc.)
+1. Run the app in a terminal
+2. Switch to any app (IDE, browser, Claude, etc.)
 3. **Hold Right Option (⌥) key** and speak
-4. Release the key → text is transcribed and pasted
+4. Release the key → text is transcribed and pasted automatically
 
 ### Change PTT Key
 
@@ -43,27 +47,35 @@ python voicekey.py --setup
 
 ## macOS Permissions
 
-On first run, macOS will ask for:
-- **Accessibility**: System Settings → Privacy & Security → Accessibility → Allow Terminal/iTerm
-- **Microphone**: System Settings → Privacy & Security → Microphone → Allow Terminal/iTerm
+On first run, grant these in **System Settings → Privacy & Security**:
+
+- **Accessibility** → Allow your Terminal app
+- **Microphone** → Allow your Terminal app
+
+> Without Accessibility permission, auto-paste (Cmd+V simulation) will not work.
 
 ## How It Works
 
 ```
-Hold PTT Key → Mac Microphone → OpenAI Whisper API → Clipboard → Auto Paste
+Hold PTT Key → Mac Microphone → Groq Whisper API → Clipboard → Auto Paste
 ```
 
-- Audio: 16kHz, 16-bit, mono WAV
-- STT: OpenAI Whisper API (supports Korean + English mixed speech)
-- Output: pbcopy + Cmd+V simulation
-- Cost: ~$0.006/min (~$10/month for heavy use)
+- **STT Engine**: Groq Whisper (`whisper-large-v3-turbo`) — fast, free tier available
+- **Audio**: 16kHz, 16-bit, mono WAV
+- **Mic**: Auto-detects real hardware mic (skips virtual devices like BlackHole)
+- **Output**: pbcopy + pynput Cmd+V simulation
+- **Cost**: Free (Groq free tier)
 
 ## Config
 
-Stored at `~/.voicekey/config.json`
+Stored at `~/.voicekey/config.json` (chmod 600)
 
 ```json
 {
-  "openai_api_key": "sk-..."
+  "groq_api_key": "gsk_..."
 }
 ```
+
+## License
+
+MIT

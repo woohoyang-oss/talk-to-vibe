@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-VoiceKey - Lightweight Speech-to-Text for Vibe Coding
+Talk to Vibe - Lightweight Speech-to-Text for Vibe Coding
 Hold Right Option key → Record → Release → Transcribe → Paste
 
 Uses Groq Whisper API (free tier, whisper-large-v3-turbo)
@@ -284,7 +284,7 @@ class VoiceKey:
     def run(self):
         ptt_display = self.ptt_key_name.replace("_", " ").title()
         print("━" * 50)
-        print(f"🎤 VoiceKey v{__version__}")
+        print(f"🎤 Talk to Vibe v{__version__}")
         print("━" * 50)
         print(f"  PTT Key:  {ptt_display}")
         print(f"  Mic:      {self.recorder.device_name}")
@@ -312,7 +312,7 @@ class VoiceKey:
 
 # ─── Entry Point ────────────────────────────────────────────────
 def main():
-    parser = argparse.ArgumentParser(description="VoiceKey - Speech to Text for Vibe Coding")
+    parser = argparse.ArgumentParser(description="Talk to Vibe - Speech to Text for Vibe Coding")
     parser.add_argument(
         "--key", 
         choices=list(KEY_MAP.keys()), 
