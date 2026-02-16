@@ -19,4 +19,4 @@ __pycache__/
 *.zip
 
 # Config (contains API key)
-# Note: actual config is at ~/.voicekey/config.json, not in repo
+# Note: actual config is at ~/.talktovibe/config.json, not in repo

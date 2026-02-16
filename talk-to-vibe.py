@@ -35,7 +35,7 @@ except ImportError:
     sys.exit(1)
 
 # ─── Config ─────────────────────────────────────────────────────
-CONFIG_DIR = Path.home() / ".voicekey"
+CONFIG_DIR = Path.home() / ".talktovibe"
 CONFIG_FILE = CONFIG_DIR / "config.json"
 
 SAMPLE_RATE = 16000       # 16kHz - optimal for Whisper
@@ -190,7 +190,7 @@ def setup_provider(force=False):
         config["custom_model"] = model or "whisper-1"
 
     save_config(config)
-    print("   ✅ Saved to ~/.voicekey/config.json\n")
+    print("   ✅ Saved to ~/.talktovibe/config.json\n")
     return provider, config
 
 

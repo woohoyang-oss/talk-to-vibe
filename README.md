@@ -75,7 +75,7 @@ Hold PTT Key → Mac Microphone → STT Provider API → Clipboard → Auto Past
 
 ## Config
 
-Stored at `~/.voicekey/config.json` (chmod 600)
+Stored at `~/.talktovibe/config.json` (chmod 600)
 
 ```json
 {
