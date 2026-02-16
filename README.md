@@ -19,7 +19,7 @@ source .venv/bin/activate
 python talk-to-vibe.py
 ```
 
-First run will ask you to choose an STT provider and enter your API key.
+First run will ask you to choose an STT provider, enter your API key, and select a Push-to-Talk key.
 
 ## STT Providers
 
@@ -45,13 +45,16 @@ python talk-to-vibe.py --provider openai # One-off override (not saved)
 
 ### Change PTT Key
 
+PTT key is configured during setup and saved to config. You can also override it per-run:
+
 ```bash
 python talk-to-vibe.py --key cmd_r    # Right Command
 python talk-to-vibe.py --key ctrl_r   # Right Control
 python talk-to-vibe.py --key f19      # F19 (if available)
+python talk-to-vibe.py --setup        # Re-run setup to change saved key
 ```
 
-Available keys: `alt_r`, `alt_l`, `cmd_r`, `ctrl_r`, `f18`, `f19`, `f20`
+Available keys: `alt_r` (default), `alt_l`, `cmd_r`, `ctrl_r`, `f18`, `f19`, `f20`
 
 ## macOS Permissions
 
@@ -80,7 +83,8 @@ Stored at `~/.talktovibe/config.json` (chmod 600)
 ```json
 {
   "provider": "groq",
-  "groq_api_key": "gsk_..."
+  "groq_api_key": "gsk_...",
+  "ptt_key": "alt_r"
 }
 ```
 

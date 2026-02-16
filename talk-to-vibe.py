@@ -189,6 +189,39 @@ def setup_provider(force=False):
         config["custom_api_key"] = api_key or ""
         config["custom_model"] = model or "whisper-1"
 
+    # PTT key selection
+    print("\n🎹 Push-to-Talk Key Setup\n")
+    key_list = list(KEY_MAP.keys())
+    key_display = {
+        "alt_r": "Right Option (⌥)",
+        "alt_l": "Left Option (⌥)",
+        "cmd_r": "Right Command (⌘)",
+        "ctrl_r": "Right Control (⌃)",
+        "f18": "F18",
+        "f19": "F19",
+        "f20": "F20",
+    }
+    current_key = config.get("ptt_key", DEFAULT_PTT_KEY)
+    for i, key in enumerate(key_list, 1):
+        label = key_display.get(key, key)
+        default_mark = " (current)" if key == current_key else ""
+        print(f"   {i}) {label}{default_mark}")
+
+    print()
+    while True:
+        choice = _input_safe(f"   Select PTT key [1-{len(key_list)}] (Enter = keep current): ")
+        if not choice:
+            break
+        try:
+            idx = int(choice) - 1
+            if 0 <= idx < len(key_list):
+                config["ptt_key"] = key_list[idx]
+                print(f"   Selected: {key_display.get(key_list[idx], key_list[idx])}")
+                break
+        except ValueError:
+            pass
+        print(f"   ⚠️  Enter a number between 1 and {len(key_list)}")
+
     save_config(config)
     print("   ✅ Saved to ~/.talktovibe/config.json\n")
     return provider, config
@@ -513,7 +546,12 @@ def main():
     # Create STT engine
     stt = create_stt(provider, config)
 
-    app = TalkToVibe(stt=stt, ptt_key_name=args.key)
+    # PTT key: CLI --key overrides config, config overrides default
+    ptt_key = args.key
+    if ptt_key == DEFAULT_PTT_KEY and "ptt_key" in config:
+        ptt_key = config["ptt_key"]
+
+    app = TalkToVibe(stt=stt, ptt_key_name=ptt_key)
     app.run()
 
 
