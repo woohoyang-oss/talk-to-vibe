@@ -100,6 +100,12 @@ Multi-provider example:
 }
 ```
 
+## Keywords
+
+voice to text, speech to text, vibe coding, whisper STT, Groq Whisper, push to talk, hands-free coding, voice coding, dictation tool, macOS developer tool, open source, Python, AI prompting, voice input for coding, talk to code, developer productivity
+
+`#vibecoding` `#voicetotext` `#speechtotext` `#whisper` `#groq` `#opensource` `#macos` `#devtools` `#python` `#handsfree` `#dictation` `#cursorIDE` `#claudeai` `#chatgpt` `#productivity` `#buildinpublic` `#indiehackers` `#sideproject`
+
 ## License
 
 MIT
