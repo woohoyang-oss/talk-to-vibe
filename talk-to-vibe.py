@@ -222,6 +222,29 @@ def setup_provider(force=False):
             pass
         print(f"   ⚠️  Enter a number between 1 and {len(key_list)}")
 
+    # Auto-Enter option
+    print("\n⏎  Auto-Enter Setup\n")
+    current_ae = config.get("auto_enter", False)
+    current_label = "ON" if current_ae else "OFF"
+    print(f"   Auto-Enter sends Enter key after pasting (current: {current_label})")
+    print()
+    print(f"   1) OFF — paste only (default)")
+    print(f"   2) ON  — paste + Enter")
+    print()
+    while True:
+        choice = _input_safe(f"   Select [1-2] (Enter = keep current): ")
+        if not choice:
+            break
+        if choice == "1":
+            config["auto_enter"] = False
+            print("   Selected: OFF")
+            break
+        elif choice == "2":
+            config["auto_enter"] = True
+            print("   Selected: ON")
+            break
+        print("   ⚠️  Enter 1 or 2")
+
     save_config(config)
     print("   ✅ Saved to ~/.talktovibe/config.json\n")
     return provider, config
@@ -409,7 +432,7 @@ def create_stt(provider, config):
 
 
 # ─── Text Output ────────────────────────────────────────────────
-def paste_text(text):
+def paste_text(text, auto_enter=False):
     """Copy text to clipboard and simulate Cmd+V paste via pynput."""
     # Copy to clipboard using pbcopy (macOS)
     process = subprocess.Popen(["pbcopy"], stdin=subprocess.PIPE)
@@ -426,14 +449,21 @@ def paste_text(text):
     kb.release('v')
     kb.release(Key.cmd)
 
+    # Auto-Enter: press Enter after paste
+    if auto_enter:
+        time.sleep(0.05)
+        kb.press(Key.enter)
+        kb.release(Key.enter)
+
 
 # ─── Main App ───────────────────────────────────────────────────
 class TalkToVibe:
-    def __init__(self, stt, ptt_key_name=DEFAULT_PTT_KEY):
+    def __init__(self, stt, ptt_key_name=DEFAULT_PTT_KEY, auto_enter=False):
         self.recorder = AudioRecorder()
         self.stt = stt
         self.ptt_key = KEY_MAP.get(ptt_key_name, KEY_MAP[DEFAULT_PTT_KEY])
         self.ptt_key_name = ptt_key_name
+        self.auto_enter = auto_enter
         self.is_recording = False
         self.processing = False
 
@@ -470,8 +500,8 @@ class TalkToVibe:
             if text:
                 print(f" done ({elapsed:.1f}s)")
                 print(f"  📝 \"{text}\"")
-                paste_text(text)
-                print("  ✅ Pasted!")
+                paste_text(text, auto_enter=self.auto_enter)
+                print("  ✅ Pasted!" + (" + Enter" if self.auto_enter else ""))
 
                 # macOS notification sound
                 subprocess.run(["afplay", "/System/Library/Sounds/Pop.aiff"], capture_output=True)
@@ -490,6 +520,7 @@ class TalkToVibe:
         print(f"  PTT Key:   {ptt_display}")
         print(f"  Mic:       {self.recorder.device_name}")
         print(f"  Provider:  {self.stt.provider_name}")
+        print(f"  Auto-Enter: {'ON' if self.auto_enter else 'OFF'}")
         print(f"  Hold key to record, release to transcribe.")
         print(f"  Result is auto-pasted to current app.")
         print(f"  Press Ctrl+C to quit.")
@@ -551,7 +582,8 @@ def main():
     if ptt_key == DEFAULT_PTT_KEY and "ptt_key" in config:
         ptt_key = config["ptt_key"]
 
-    app = TalkToVibe(stt=stt, ptt_key_name=ptt_key)
+    auto_enter = config.get("auto_enter", False)
+    app = TalkToVibe(stt=stt, ptt_key_name=ptt_key, auto_enter=auto_enter)
     app.run()
 
 
