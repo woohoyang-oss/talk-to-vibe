@@ -11,6 +11,8 @@ Usage:
     python voicekey.py --setup      # Re-enter API key
 """
 
+__version__ = "0.2.0"
+
 import os
 import sys
 import json
@@ -207,16 +209,21 @@ class WhisperSTT:
 
 # ─── Text Output ────────────────────────────────────────────────
 def paste_text(text):
-    """Copy text to clipboard and simulate Cmd+V paste."""
+    """Copy text to clipboard and simulate Cmd+V paste via pynput."""
     # Copy to clipboard using pbcopy (macOS)
     process = subprocess.Popen(["pbcopy"], stdin=subprocess.PIPE)
     process.communicate(text.encode("utf-8"))
 
-    # Simulate Cmd+V using osascript
-    subprocess.run([
-        "osascript", "-e",
-        'tell application "System Events" to keystroke "v" using command down'
-    ], capture_output=True)
+    # Small delay to ensure clipboard is ready
+    time.sleep(0.1)
+
+    # Simulate Cmd+V using pynput (works reliably across all macOS apps)
+    from pynput.keyboard import Controller, Key
+    kb = Controller()
+    kb.press(Key.cmd)
+    kb.press('v')
+    kb.release('v')
+    kb.release(Key.cmd)
 
 
 # ─── Main App ───────────────────────────────────────────────────
@@ -277,7 +284,7 @@ class VoiceKey:
     def run(self):
         ptt_display = self.ptt_key_name.replace("_", " ").title()
         print("━" * 50)
-        print("🎤 VoiceKey - Speech to Text")
+        print(f"🎤 VoiceKey v{__version__}")
         print("━" * 50)
         print(f"  PTT Key:  {ptt_display}")
         print(f"  Mic:      {self.recorder.device_name}")
