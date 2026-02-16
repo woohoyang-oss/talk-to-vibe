@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "🎤 VoiceKey Setup"
+echo "🎤 Talk to Vibe Setup"
 echo "=================="
 
 # Check Python 3
@@ -46,7 +46,7 @@ echo "✅ Setup complete!"
 echo ""
 echo "Usage:"
 echo "  source .venv/bin/activate"
-echo "  python voicekey.py"
+echo "  python talk-to-vibe.py"
 echo ""
-echo "⚠️  First run: You'll need to enter your OpenAI API key."
+echo "⚠️  First run: You'll be asked to select an STT provider and enter your API key."
 echo "⚠️  macOS: Grant Accessibility & Microphone permissions when prompted."
