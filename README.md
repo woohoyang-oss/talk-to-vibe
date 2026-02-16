@@ -1,8 +1,8 @@
 # 🎤 Talk to Vibe
 
-Lightweight Speech-to-Text for macOS. Hold a key, speak, release — text is auto-pasted.
+**Vibe code with your voice, not your keyboard.**
 
-Built for vibe coding: dictate prompts, comments, commit messages, or anything else without leaving your keyboard.
+Hold a key, speak, release — text is auto-pasted. Dictate prompts, comments, commit messages, or anything else without leaving your keyboard.
 
 ## Quick Start
 
